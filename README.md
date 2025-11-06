@@ -22,7 +22,9 @@ Caveats:
 
 ## Setup
 
+* apt-get install build-essential python3-dev python3-pip i2c-tools python3-lgpio swig liblgpio-dev libjpeg-dev
 * You'll probably need a virtualenv set up for python (post Bookworm)
+* pip install -r requirements.txt
 
 ## How it works
 
