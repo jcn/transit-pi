@@ -39,7 +39,7 @@ def get_train_times():
     # sort times for each direction and keep only the next two
     for direction in arrivals:
         arrivals[direction].sort()
-        arrivals[direction] = arrivals[direction][:2]
+        arrivals[direction] = arrivals[direction][:5]
 
     return arrivals
 

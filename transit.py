@@ -99,10 +99,10 @@ def toggle_direction():
 
 def format_times(times):
     """Return up to two times joined with & and a single 'min' at the end."""
-    times = times[:2]  # take at most 2
+    times = times[:3]  # take at most 3
     if not times:
         return "--"
-    return " & ".join(str(t) for t in times) + " min"
+    return ", ".join(str(t) for t in times) #+ " min"
 
 def get_arrival_strings(subway_file="subway_data.json", bus_file="bus_data.json", direction="UPTOWN"):
     """Return formatted arrival strings for subway and bus for a given direction."""
