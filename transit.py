@@ -1,25 +1,29 @@
-from luma.core.interface.serial import i2c
-from luma.oled.device import sh1106
-from PIL import Image, ImageDraw, ImageFont
-from gpiozero import Button
-from signal import pause
+from pathlib import Path
 from time import sleep
 import json
 
-# --- Initialize display ---
-serial = i2c(port=1, address=0x3C)
-device = sh1106(serial, width=128, height=64)
+IS_RPI = Path("/etc/rpi-issue").exists()
 
-# --- Canvas size ---
-CANVAS_WIDTH = 125
-CANVAS_HEIGHT = 64
+if IS_RPI:
+    from luma.core.interface.serial import i2c
+    from luma.oled.device import sh1106
+    from PIL import Image, ImageDraw, ImageFont
+    from gpiozero import Button
 
-# --- Font ---
-font = ImageFont.load_default()
+    # --- Initialize display ---
+    serial = i2c(port=1, address=0x3C)
+    device = sh1106(serial, width=128, height=64)
 
-# --- Button setup ---
-BUTTON_PIN = 26  # BCM numbering
-button = Button(BUTTON_PIN, pull_up=True)
+    # --- Canvas size ---
+    CANVAS_WIDTH = 125
+    CANVAS_HEIGHT = 64
+
+    # --- Font ---
+    font = ImageFont.load_default()
+
+    # --- Button setup ---
+    BUTTON_PIN = 26  # BCM numbering
+    button = Button(BUTTON_PIN, pull_up=True)
 
 # --- Example static transit data ---
 subway_line = "1"
@@ -130,10 +134,20 @@ def get_arrival_strings(subway_file="subway_data.json", bus_file="bus_data.json"
     return subway_times, bus_times
 
 if __name__ == "__main__":
-    # Attach button
-    button.when_pressed = toggle_direction
+    if IS_RPI:
+        # Attach button
+        button.when_pressed = toggle_direction
 
-    while True:
-        draw_transit(direction_state[current_index])
-        sleep(30)
+        while True:
+            draw_transit(direction_state[current_index])
+            sleep(30)
+
+    else:
+        print("Not running on a pi")
+
+        for direction in direction_state:
+            subway_times, bus_times = get_arrival_strings(direction=direction)
+            print(direction)
+            print(subway_times)
+            print(bus_times)
 
