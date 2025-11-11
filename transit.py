@@ -119,7 +119,7 @@ def get_arrival_strings(subway_file="subway_data.json", bus_file="bus_data.json"
             data = json.load(f)
             times = data.get("subway", {}).get(direction, [])
             subway_times = format_times(times)
-    except FileNotFoundError:
+    except (FileNotFoundError, json.decoder.JSONDecodeError):
         pass
 
     # Load bus times
@@ -128,7 +128,7 @@ def get_arrival_strings(subway_file="subway_data.json", bus_file="bus_data.json"
             data = json.load(f)
             times = data.get("bus", {}).get(direction, [])
             bus_times = format_times(times)
-    except FileNotFoundError:
+    except (FileNotFoundError, json.decoder.JSONDecodeError):
         pass
 
     return subway_times, bus_times
