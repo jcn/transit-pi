@@ -20,7 +20,7 @@ def get_train_times():
     resp = requests.get(FEED_URL, headers=headers)
     feed.ParseFromString(resp.content)
 
-    print(f"Feed has {len(feed.entity)} entities")
+    #print(f"Feed has {len(feed.entity)} entities")
 
     now = int(time.time())
     arrivals = {direction: [] for direction in STOP_IDS}
